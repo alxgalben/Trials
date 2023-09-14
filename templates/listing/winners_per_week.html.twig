@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Receipt {% endblock %}
+
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}"/>
+            <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap4.min.css"/>
+        {% endblock %}
+
+        {% block javascripts %}
+            <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+            <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap4.min.js"></script>
+            <script>
+                $(document).ready(function () {
+                    $('#example').DataTable();
+                });
+
+                $(document).ready(function () {
+                    $("#weekDropdown").change(function () {
+                        var selectedWeek = $(this).val();
+                        if (selectedWeek !== "") {
+                            window.location.href = "/winners-week?week=" + selectedWeek;
+                        }
+                    });
+                });
+            </script>
+        {% endblock %}
+
+{% block content %}
+    <h1>Winners per Week</h1>
+    <select id="weekDropdown">
+        <option value="">Choose an option</option>
+        <option value="1">3-9 July 2023</option>
+        <option value="2">10-16 July 2023</option>
+        <option value="3">17-23 July 2023</option>
+    </select>
+
+    <table id="example" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Phone Number</th>
+            <th scope="col">Receipt</th>
+        </tr>
+        </thead>
+        <tbody id="tbody">
+        {% for value in winnersPerWeek %}
+            <tr>
+            <td><b>{{ value.id }}</b></td>
+            <td><b>{{ value.firstName }}</b></td>
+            <td><b>{{ value.lastName }}</b></td>
+            <td><b>{{ value.email }}</b></td>
+            <td><b>{{ value.phoneNumber }}</b></td>
+            <td><b>{{ value.receipt.name }}</b></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
